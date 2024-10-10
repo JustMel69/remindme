@@ -16,7 +16,7 @@ impl State {
         let dir = dirs.data_dir().join("data");
 
         if dir.exists() {
-            let mut reader = BufReader::new(File::open(&dir)?);
+            let reader = BufReader::new(File::open(&dir)?);
             let mut lines = reader.lines();
 
             let (curr_session, last_session) = parse_header(lines.next().expect("Missing header.")?.as_ref());
@@ -36,7 +36,7 @@ impl State {
     pub fn save(&self) -> std::io::Result<()> {
         let mut dir = self.dir.clone();
         dir.pop();
-        std::fs::create_dir_all(dir);
+        std::fs::create_dir_all(dir).expect("Couldn't create directories.");
 
         let mut writer = BufWriter::new(File::create(&self.dir)?);
         writer.write(format!("{}:{}", self.curr_session, self.last_session).as_bytes())?;
