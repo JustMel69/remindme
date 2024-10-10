@@ -5,6 +5,7 @@ const USAGE: &'static str = r#"Usage: remindme [OPTIONS] [MSG]
     --warn  Displays a warning if there are reminders on the stack
     --show  Displays and clears the reminders
     --init  Initializes a new session
+    --defer Delays all reminders until next session
     --help  Displays this message
 "#;
 
@@ -12,6 +13,7 @@ mod warn_cmd;
 mod show_cmd;
 mod push_cmd;
 mod init_cmd;
+mod defer_cmd;
 mod state;
 
 fn main() {
@@ -22,6 +24,7 @@ fn main() {
         Some("--warn") => warn_cmd::run(),
         Some("--show") => show_cmd::run(),
         Some("--init") => init_cmd::run(),
+        Some("--defer") => defer_cmd::run(),
         Some("--help") => help_cmd(),
         Some(x) => {
             if x.starts_with("--") {
